@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Classroom</title>
     <link rel='icon' href='https://www.gstatic.com'>
@@ -14,49 +14,31 @@
             background: var(--bg); color: var(--txt);
             margin: 0; padding: 40px 20px;
         }
-        #sections-container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
+        #sections-container { max-width: 1000px; margin: 0 auto; }
         .letter-section { margin-bottom: 40px; }
         .letter-header { 
-            font-size: 1.8rem; 
-            color: var(--acc); 
-            margin-bottom: 15px; 
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
-            font-weight: 800;
+            font-size: 1.8rem; color: var(--acc); margin-bottom: 15px; 
+            border-bottom: 1px solid #334155; padding-bottom: 8px; font-weight: 800;
         }
         .buttons-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 15px; 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; 
         }
         .game-btn {
-            background: var(--card);
-            color: white;
-            border: 1px solid #334155;
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            background: var(--card); color: white; border: 1px solid #334155;
+            padding: 16px; border-radius: 12px; cursor: pointer; text-align: center;
+            font-weight: 600; font-size: 1rem; transition: all 0.2s ease;
+            text-transform: uppercase; letter-spacing: 0.5px; width: 100%;
         }
         .game-btn:hover {
-            background: var(--btn-hover);
-            border-color: var(--acc);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: var(--btn-hover); border-color: var(--acc);
+            transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
     <script> 
-        const games = [
+        // Array renamed to games as requested
+        const games = [ 'cl1',
   'cl1',
 'cl10bullets',
 'cl10minutestildawn',
@@ -1991,8 +1973,7 @@
 'snowbros',
 'superdromebugs',
 'vvvvvv',
-'wilywars'
-]; 
+'wilywars']; 
 
         function initLayout() {
             const cont = document.createElement('div'); 
@@ -2013,7 +1994,6 @@
                     if (gamesByChar[firstChar]) gamesByChar[firstChar].push(game);
                 }
             });
-
             const buildCdnUrl = (name) => {
                 const normalized = (name.includes('.') ? name : name + '.html');
                 return `https://cdn.jsdelivr.net{encodeURIComponent(normalized)}?t=${Date.now()}`;
@@ -2033,18 +2013,22 @@
                     gamesByChar[char].forEach(game => {
                         const btn = document.createElement('button');
                         btn.className = 'game-btn';
-                        // Clean up the name (remove 'cl' and capitalize)
                         btn.textContent = game.substring(2).replace(/-/g, ' ');
                         
+                        // Integrated opening logic: Fetch text and write to new window
                         btn.onclick = () => {
-                            fetch(buildCdnUrl(game)).then(r => r.text()).then(html => {
-                                const w = window.open("about:blank", "_blank");
-                                if(w) { 
-                                    w.document.open(); 
-                                    w.document.write(html); 
-                                    w.document.close(); 
-                                }
-                            });
+                            const url = buildCdnUrl(game);
+                            fetch(url)
+                                .then(response => response.text())
+                                .then(text => {
+                                    const newWin = window.open("about:blank", "_blank");
+                                    if (newWin) {
+                                        newWin.document.open();
+                                        newWin.document.write(text); // Writes fetched game HTML
+                                        newWin.document.close();
+                                    }
+                                })
+                                .catch(err => console.error("Failed to load game:", err));
                         };
                         btnGrid.appendChild(btn);
                     });
