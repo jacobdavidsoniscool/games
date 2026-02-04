@@ -57,14 +57,22 @@
 </head>
 <body>
     <script> 
+        // These names must match the file names in your GitHub repo exactly
         const games = ['clbaseballbros', 'cl1', 'clbitlife', 'clslope']; 
 
         function initLayout() {
-            // Self-inject the container
             const cont = document.createElement('div'); 
             cont.id = 'sections-container';
             document.body.appendChild(cont);
             generateAllSections();
+        }
+
+        // Helper to build the correct jsDelivr URL for your GitHub files
+        function buildCdnUrl(name, includeTimestamp = false) {
+            const normalized = name.includes('.') ? name : name + '.html';
+            // Path: https://cdn.jsdelivr.net
+            const base = `https://cdn.jsdelivr.net{normalized}`;
+            return includeTimestamp ? `${base}?t=${Date.now()}` : base;
         }
 
         function generateAllSections() {
@@ -80,14 +88,6 @@
                 }
             });
 
-            // FIXED: Added back the full JSDelivr path
-            function buildCdnUrl(name, includeTimestamp = false) {
-                const normalized = name.includes('.') ? name : name + '.html';
-                const encoded = encodeURIComponent(normalized);
-                const base = `https://cdn.jsdelivr.net{encoded}`;
-                return includeTimestamp ? `${base}?t=${Date.now()}` : base;
-            }
-
             const container = document.getElementById('sections-container');
 
             allChars.forEach(char => {
@@ -102,14 +102,14 @@
                     gamesByChar[char].forEach(game => {
                         const btn = document.createElement('button');
                         btn.className = 'game-btn';
+                        // Displays the name without "cl" and replaces dashes with spaces
                         btn.textContent = game.substring(2).replace(/-/g, ' ');
                         
-                        // Original Logic: Fetch code and inject into blank window
                         btn.onclick = () => {
                             const url = buildCdnUrl(game, true);
                             fetch(url)
                                 .then(response => {
-                                    if (!response.ok) throw new Error('File not found');
+                                    if (!response.ok) throw new Error('File not found in GitHub repo');
                                     return response.text();
                                 })
                                 .then(text => {
