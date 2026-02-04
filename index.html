@@ -60,6 +60,7 @@
         const games = ['clbaseballbros', 'cl1', 'clbitlife', 'clslope']; 
 
         function initLayout() {
+            // Self-inject the container
             const cont = document.createElement('div'); 
             cont.id = 'sections-container';
             document.body.appendChild(cont);
@@ -78,6 +79,8 @@
                     if (gamesByChar[firstChar]) gamesByChar[firstChar].push(game);
                 }
             });
+
+            // FIXED: Added back the full JSDelivr path
             function buildCdnUrl(name, includeTimestamp = false) {
                 const normalized = name.includes('.') ? name : name + '.html';
                 const encoded = encodeURIComponent(normalized);
@@ -100,10 +103,15 @@
                         const btn = document.createElement('button');
                         btn.className = 'game-btn';
                         btn.textContent = game.substring(2).replace(/-/g, ' ');
+                        
+                        // Original Logic: Fetch code and inject into blank window
                         btn.onclick = () => {
                             const url = buildCdnUrl(game, true);
                             fetch(url)
-                                .then(response => response.text())
+                                .then(response => {
+                                    if (!response.ok) throw new Error('File not found');
+                                    return response.text();
+                                })
                                 .then(text => {
                                     const newWin = window.open("about:blank", "_blank");
                                     if (newWin) {
@@ -112,7 +120,7 @@
                                         newWin.document.close();
                                     }
                                 })
-                                .catch(err => console.error("Error launching game:", err));
+                                .catch(err => alert("Error launching " + game + ": " + err.message));
                         };
                         btnGrid.appendChild(btn);
                     });
