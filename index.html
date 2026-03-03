@@ -1,137 +1,185 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Classroom</title>
-    <link rel='icon' href='https://www.gstatic.com'>
-    <style>
-        :root {
-            --bg: #0f172a; --card: #1e293b; --acc: #38bdf8; --txt: #f1f5f9; --btn-hover: #334155;
-        }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: var(--bg); color: var(--txt);
-            margin: 0; padding: 40px 20px;
-        }
-        #sections-container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
-        .letter-section { margin-bottom: 40px; }
-        .letter-header { 
-            font-size: 1.8rem; 
-            color: var(--acc); 
-            margin-bottom: 15px; 
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
-            font-weight: 800;
-        }
-        .buttons-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 15px; 
-        }
-        .game-btn {
-            background: var(--card);
-            color: white;
-            border: 1px solid #334155;
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            width: 100%;
-        }
-        .game-btn:hover {
-            background: var(--btn-hover);
-            border-color: var(--acc);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>UGS Files</title>
+
+   <style>
+       :root {
+           --bg: #0f172a;
+           --card: #1e293b;
+           --acc: #38bdf8;
+           --txt: #f1f5f9;
+           --btn-hover: #334155;
+       }
+
+       body {
+           font-family: system-ui, -apple-system, sans-serif;
+           background: var(--bg);
+           color: var(--txt);
+           margin: 0;
+           padding: 40px 20px;
+       }
+
+       h1 {
+           text-align: center;
+           margin-bottom: 10px;
+       }
+
+       .sub-links {
+           text-align: center;
+           margin-bottom: 40px;
+       }
+
+       .sub-links a {
+           color: var(--acc);
+           text-decoration: none;
+           font-weight: 600;
+       }
+
+       #sections-container {
+           max-width: 1200px;
+           margin: 0 auto;
+       }
+
+       .letter-section {
+           margin-bottom: 50px;
+       }
+
+       .letter-header {
+           font-size: 1.8rem;
+           color: var(--acc);
+           margin-bottom: 15px;
+           border-bottom: 1px solid #334155;
+           padding-bottom: 8px;
+           font-weight: 800;
+       }
+
+       .buttons-container {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+           gap: 15px;
+       }
+
+       .game-btn {
+           background: var(--card);
+           color: white;
+           border: 1px solid #334155;
+           padding: 16px;
+           border-radius: 12px;
+           cursor: pointer;
+           font-weight: 600;
+           font-size: 0.95rem;
+           transition: all 0.2s ease;
+           text-transform: uppercase;
+           letter-spacing: 0.5px;
+           width: 100%;
+       }
+
+       .game-btn:hover {
+           background: var(--btn-hover);
+           border-color: var(--acc);
+           transform: translateY(-3px);
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+       }
+   </style>
 </head>
 <body>
-    <script> 
-        // These names must match the file names in your GitHub repo exactly
-        const games = ['clbaseballbros', 'cl1', 'clbitlife', 'clslope']; 
 
-        function initLayout() {
-            const cont = document.createElement('div'); 
-            cont.id = 'sections-container';
-            document.body.appendChild(cont);
-            generateAllSections();
-        }
+<h1>UGS Files</h1>
 
-        // Helper to build the correct jsDelivr URL for your GitHub files
-        function buildCdnUrl(name, includeTimestamp = false) {
-            const normalized = name.includes('.') ? name : name + '.html';
-            // Path: https://cdn.jsdelivr.net
-            const base = `https://cdn.jsdelivr.net{normalized}`;
-            return includeTimestamp ? `${base}?t=${Date.now()}` : base;
-        }
+<div class="sub-links">
+   Files from
+   <a href="https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/" target="_blank">
+       Ultimate Game Stash Google Doc
+   </a>
+   <br><br>
+   Discord:
+   <a href="https://discord.gg/rmVsAqkpkA" target="_blank">
+       discord.gg/rmVsAqkpkA
+   </a>
+</div>
 
-        function generateAllSections() {
-            const allChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-            const gamesByChar = {};
-            allChars.forEach(char => { gamesByChar[char] = []; });
+<div id="sections-container"></div>
 
-            games.forEach(game => {
-                const lower = game.toLowerCase();
-                if (lower.startsWith('cl')) {
-                    const firstChar = lower.substring(2, 3).toUpperCase();
-                    if (gamesByChar[firstChar]) gamesByChar[firstChar].push(game);
-                }
-            });
+<script>
 
-            const container = document.getElementById('sections-container');
+// KEEP YOUR ORIGINAL FILE ARRAY HERE
+const files = [/* paste your full files array here */];
 
-            allChars.forEach(char => {
-                if (gamesByChar[char].length > 0) {
-                    const section = document.createElement('div');
-                    section.className = 'letter-section';
-                    section.innerHTML = `<div class="letter-header">${char}</div>`;
-                    
-                    const btnGrid = document.createElement('div');
-                    btnGrid.className = 'buttons-container';
+function buildCdnUrl(name, includeTimestamp = false) {
+   const normalized = name.includes('.') ? name : name + '.html';
+   const base = `https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile/UGS-Files/${encodeURIComponent(normalized)}`;
+   return includeTimestamp ? `${base}?t=${Date.now()}` : base;
+}
 
-                    gamesByChar[char].forEach(game => {
-                        const btn = document.createElement('button');
-                        btn.className = 'game-btn';
-                        // Displays the name without "cl" and replaces dashes with spaces
-                        btn.textContent = game.substring(2).replace(/-/g, ' ');
-                        
-                        btn.onclick = () => {
-                            const url = buildCdnUrl(game, true);
-                            fetch(url)
-                                .then(response => {
-                                    if (!response.ok) throw new Error('File not found in GitHub repo');
-                                    return response.text();
-                                })
-                                .then(text => {
-                                    const newWin = window.open("about:blank", "_blank");
-                                    if (newWin) {
-                                        newWin.document.open();
-                                        newWin.document.write(text);
-                                        newWin.document.close();
-                                    }
-                                })
-                                .catch(err => alert("Error launching " + game + ": " + err.message));
-                        };
-                        btnGrid.appendChild(btn);
-                    });
+function generateAllSections() {
 
-                    section.appendChild(btnGrid);
-                    container.appendChild(section);
-                }
-            });
-        }
+   const allChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+   const filesByChar = {};
+   allChars.forEach(char => filesByChar[char] = []);
 
-        window.addEventListener('DOMContentLoaded', initLayout);
-    </script>
+   files.forEach(file => {
+       const lower = file.toLowerCase();
+       if (lower.startsWith('cl')) {
+           const firstChar = lower.substring(2,3).toUpperCase();
+           if (filesByChar[firstChar]) {
+               filesByChar[firstChar].push(file);
+           }
+       }
+   });
+
+   const container = document.getElementById('sections-container');
+
+   allChars.forEach(char => {
+       if (filesByChar[char].length > 0) {
+
+           const section = document.createElement('div');
+           section.className = 'letter-section';
+
+           const header = document.createElement('div');
+           header.className = 'letter-header';
+           header.textContent = char;
+
+           const grid = document.createElement('div');
+           grid.className = 'buttons-container';
+
+           filesByChar[char].forEach(file => {
+
+               const btn = document.createElement('button');
+               btn.className = 'game-btn';
+               btn.textContent = file.substring(2).replace(/-/g, ' ');
+
+               btn.onclick = () => {
+                   const url = buildCdnUrl(file, true);
+                   fetch(url)
+                       .then(r => {
+                           if (!r.ok) throw new Error("File not found");
+                           return r.text();
+                       })
+                       .then(text => {
+                           const win = window.open("about:blank", "_blank");
+                           win.document.open();
+                           win.document.write(text);
+                           win.document.close();
+                       })
+                       .catch(() => alert("Error launching " + file));
+               };
+
+               grid.appendChild(btn);
+           });
+
+           section.appendChild(header);
+           section.appendChild(grid);
+           container.appendChild(section);
+       }
+   });
+}
+
+window.addEventListener('DOMContentLoaded', generateAllSections);
+
+</script>
+
 </body>
 </html>
